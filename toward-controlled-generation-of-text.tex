@@ -52,6 +52,7 @@
       \item $E \Rightarrow$ \textbf{encoder} parameterized to generate $z$, 
       \item $G \Rightarrow$ \textbf{decoder/generator} produces $\hat{x}$ conditioned on $(z, c)$.
       \item $D \Rightarrow$ \textbf{discriminator} predicts $c$ given $\hat{x}$.
+      \item $\tau \Rightarrow$ \textbf{softmax temperature} for decoder word prediction.
     \end{itemize}
   \end{frame}
 
@@ -115,7 +116,7 @@
       \draw [->] (encoder2) -- (latent2);
 
       % Independence constraint
-      \draw [red, dashed, ->] ($(encoder2) + (-0.8,0.15)$) -- ($(output) + (0.25,0.15)$);
+      \draw [red, dashed, ->] ($(encoder2) + (-0.4,0.15)$) -- ($(output) + (0.25,0.15)$);
       \draw [red, dashed, ->] ($(output) + (-0.25,0.15)$) -- ($(generator) + (0.7,0.15)$);
 
       % Discriminator loss
@@ -125,32 +126,48 @@
     \end{center}
   \end{frame}
 
-  \begin{frame}{Training Objectives}
-    \textbf{Reconstruction Loss} 
-    
-    Maximize the likelihood of predicting the original document $x$, given the latent spaces and the generator $G(z,c)$.
-      \begin{eqnarray*}
-        \mathcal{L}_{VAE}(\theta_G, \theta_E; x) &=& 
-        - \mathbb{E}_{q_E(z|x)q_D(c|x)}[log P_G(x|z,c)] \\ & & 
-        + KL(q_E(z|x)||P(z))
-      \end{eqnarray*}
+  \begin{frame}{Optimization Objectives}
+    \textbf{Generator Optimization}
+
+    \begin{itemize}
+      \item Maximize the likelihood of predicting the original document $x$, given the latent spaces and the generator $G(z,c)$.
+        \begin{eqnarray*}
+          \mathcal{L}_{VAE}(\theta_G, \theta_E; x) &=& 
+          - \mathbb{E}_{q_E(z|x)q_D(c|x)}[log p_G(x|z,c)] \\ & & 
+          + KL(q_E(z|x)||p(z))
+        \end{eqnarray*}
+      \item Maximize the likelihood of generating the output documents with the correct structured code $c$
+      \begin{equation*}
+        \mathcal{L}_{attr, c}(\theta_G) = - \mathbb{E}_{p(z)p(c)} 
+        [log q_D(c|\tilde{G_{\tau}}(z,c))]
+      \end{equation*}
+    \end{itemize}
   \end{frame}
 
-  \begin{frame}{Training Objectives}
-    \textbf{Discriminator Loss} 
+  \begin{frame}{Optimization Objectives}
+    \textbf{Discriminator Optimization} 
+
     \begin{itemize}
       \item Maximize the likelihood of predicting the correct distribution of the structured code $c$ given the labeled examples $X_L$.
       \begin{equation*}
         \mathcal{L}_S(\theta_D) = - \mathbb{E}_{X_L}[log q_D(c_L|x_L)]
       \end{equation*}
-      \item Maximize the likelihood of predicting the correct distribution of the structured code $c$ given the generated sentences $\hat{x}$. Also minimize the empirically observed Shannon entropy of the observed discriminator prediction $q_D(c\prime|\hat{x})$, which reduces uncertainty and increases confidence of the structured code prediction.
+      \item Maximize the likelihood of predicting the correct distribution of the structured code $c$ given the generated sentences $\hat{x}$. Also minimize the empirically observed Shannon entropy of the observed discriminator prediction $q_D(c'|\hat{x})$.
+      \begin{equation*}
+        \mathcal{L}_U(\theta_D) = - \mathbb{E}_{p_G(\hat{x}|z,c)p(z)p(c)} 
+        [log q_D(c|\hat{x}) + \beta \mathcal{H} q_D(c'|\hat{x})]
+      \end{equation*}
     \end{itemize}
   \end{frame}
 
   \begin{frame}{Training Objectives}
-    \textbf{Independence Constraint}
+    \textbf{Additional Generator Optimization: Independence Constraint}
     
-    The encoder from loss 1, is used to regenerate the latent distribution $z$ devoid of the structured code from the output distribution $\hat{x}$. Regardless of the structured code  $c$ that is currently present in either $x$ or $\hat{x}$, processing either through the generator should produce a consistent $z$. This allows the encoder to encode only latent factors that are independent of the structured code.
+    The encoder is re-used to regenerate the latent distribution $z$ devoid of the structured code from the output distribution $\tilde{G_{\tau}}(z,c)$. 
+    \begin{equation*}
+      \mathcal{L}_{attr, z}(\theta_G) = - \mathbb{E}_{p(z)p(c)} 
+      [log q_E(z|\tilde{G_{\tau}}(z,c))]
+    \end{equation*}
   \end{frame}
 
 \end{document}
