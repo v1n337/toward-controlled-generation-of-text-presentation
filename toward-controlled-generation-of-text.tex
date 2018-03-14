@@ -1,4 +1,5 @@
 \documentclass{beamer}
+
 \usepackage{tikz}
 \usepackage{amsmath}
 \usepackage{algorithm}
@@ -197,6 +198,11 @@
   \end{algorithm}
 \end{frame}
 
+\begin{frame}{Algorithm}
+  \centering
+  \includegraphics[width=\textwidth]{images/wake-sleep.pdf}
+\end{frame}
+
 \section{Experimental Setup}
 \begin{frame}{Experimental Setup}
   \textbf{Simple Generative Reconstruction}
@@ -231,5 +237,36 @@
   \end{itemize}
 \end{frame}
 
-\bibliography{toward-controlled-generation-of-text}
+\begin{frame}{Results}
+  \centering
+  \includegraphics[width=\textwidth]{images/senti.pdf}
+\end{frame}
+
+\begin{frame}{Results}  
+  \begin{table}
+    \tiny
+    \centering
+    \begin{tabular}{ c || c }
+    \centering
+    {\small \textbf{w/ independence constraint}} & {\small\textbf{w/o independence constraint}} \\ \hline       \hline \\
+      the film is strictly routine & the acting is bad \\
+      $\Downarrow$ & $\Downarrow$ \\
+      the film is full of imagination & the movie is so much fun \\ \\
+      \hline \\
+      after watching this movie , i felt that disappointed & none of this is very original \\ 
+      $\Downarrow$ & $\Downarrow$ \\
+      after seeing this film , i 'm a fan & highly recommended viewing for its courage , and ideas\\ \\
+      \hline \\
+      the acting is uniformly bad either &  too bland \\
+      $\Downarrow$ & $\Downarrow$ \\
+      the performances are uniformly good & highly watchable \\ \\
+      \hline \\
+      this is just awful & i can analyze this movie without more than three words \\ 
+      $\Downarrow$ & $\Downarrow$ \\
+      this is pure genius & i highly recommend this film to anyone who appreciates music   \\ \\
+    \end{tabular}    
+  \end{table}
+\end{frame}
+
+{\tiny \bibliography{toward-controlled-generation-of-text}}
 \end{document}
