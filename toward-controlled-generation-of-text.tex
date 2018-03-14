@@ -1,6 +1,8 @@
 \documentclass{beamer}
 \usepackage{tikz}
 \usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algorithmic}
 
 \usetikzlibrary{shapes,arrows,positioning,calc}
 \usetheme{metropolis}
@@ -11,172 +13,223 @@
 \institute{ICML 2017}
 
 \begin{document}
-  \maketitle
+\maketitle
 
-    \section{Motivation}
-    \begin{frame}{Motivation}
-      Interpretable latent space representations
-      \begin{center}
-        \begin{tabular}{ | c | c | c | c | }
-          \hline
-          0.21 & 0.32 & 0.74 & 0.43 \\  
-          \hline
-        \end{tabular}
-        {\Huge$$\Downarrow$$}
-        \begin{tabular}{ | c | c | c | c | }
-          \hline
-          0.68 & 0.12 & 0.33 & {\color{red}\textbf{1.0}} \\  
-          \hline
-          \hline
-          0.68 & 0.12 & 0.33 & {\color{red}\textbf{0.0}} \\  
-          \hline
-        \end{tabular}
-      \end{center}
-    \end{frame}
+\section{Motivation}
+\begin{frame}{Motivation}
+  Interpretable latent space representations
+  \begin{center}
+    \begin{tabular}{ | c | c | c | c | }
+      \hline
+      0.21 & 0.32 & 0.74 & 0.43 \\  
+      \hline
+    \end{tabular}
+    {\Huge$$\Downarrow$$}
+    \begin{tabular}{ | c | c | c | c | }
+      \hline
+      0.68 & 0.12 & 0.33 & {\color{red}\textbf{1.0}} \\  
+      \hline
+      \hline
+      0.68 & 0.12 & 0.33 & {\color{red}\textbf{0.0}} \\  
+      \hline
+    \end{tabular}
+  \end{center}
+\end{frame}
 
-  \section{Method}
-  \begin{frame}{Notation}
-    \begin{itemize}
-      \item $x \Rightarrow$ \textbf{source corpus}
-      \item $\hat{x} \Rightarrow$ \textbf{output corpus}
-      \item $c \Rightarrow$ \textbf{structured code} is a known label for each document
-      \item $z \Rightarrow$ \textbf{unstructured latent code}
-      \item $E \Rightarrow$ \textbf{encoder} parameterized to generate $z$, 
-      \item $G \Rightarrow$ \textbf{decoder/generator} produces $\hat{x}$ conditioned on $(z, c)$.
-      \item $D \Rightarrow$ \textbf{discriminator} predicts $c$ given $\hat{x}$.
-      \item $\tau \Rightarrow$ \textbf{softmax temperature} for decoder word prediction.
-    \end{itemize}
-  \end{frame}
+\section{Method}
+\begin{frame}{Notation}
+  \begin{itemize}
+    \item $x \Rightarrow$ \textbf{source corpus}
+    \item $\hat{x} \Rightarrow$ \textbf{output corpus}
+    \item $c \Rightarrow$ \textbf{structured code} is a known label for each document
+    \item $z \Rightarrow$ \textbf{unstructured latent code}
+    \item $E \Rightarrow$ \textbf{encoder} parameterized to generate $z$, 
+    \item $G \Rightarrow$ \textbf{decoder/generator} produces $\hat{x}$ conditioned on $(z, c)$.
+    \item $D \Rightarrow$ \textbf{discriminator} predicts $c$ given $\hat{x}$.
+    \item $\tau \Rightarrow$ \textbf{softmax temperature} for decoder word prediction.
+  \end{itemize}
+\end{frame}
 
-  \begin{frame}{Architecture}
-    \tikzstyle{block} = [draw, rectangle, minimum height=2em]
-    \centering
-    \begin{tikzpicture}[auto, node distance=1cm,>=latex']
-        \node [label={[label distance=0.05cm]270:\tiny{input-text}}, block, name=input] (input) {$x$};
-        \node [label={[label distance=0.05cm]270:\tiny{encoder}}, purple, block, right = of input] (encoder) {$E$};
-        \node [label={[label distance=0.05cm]270:\tiny{latent-code}}, block, right = of encoder] (latent) {$z$};
-        \node [label={[label distance=0.05cm]270:\tiny{structured-code}}, block, below = of latent] (code) {$c$};
-        \node [label={[label distance=0.05cm]270:\tiny{generator}}, block, right = of latent] (generator) {$G(z, c)$};
-        \node [label={[label distance=0.05cm]0:\tiny{output}}, block, right = of generator] (output) {$\hat{x}$};
-        \node [coordinate, above = of output] (inter1) {};
-        \node [label={[label distance=0.05cm]270:\tiny{discriminator}}, block, below = of output] (discriminator) {$D(c|\hat{x})$};
-
-        \draw [->] (input) -- (encoder);
-        \draw [->] (encoder) -- (latent);
-        \draw [->] (latent) -- (generator);
-        \draw [->] (code) -- (generator);
-        \draw [->] (generator) -- (output);
-        \draw [-] (output) -- (inter1);
-        \draw [->] (inter1) -| (encoder);
-        \draw [->] (output) -- (discriminator);
-        \draw [->] (discriminator) -- (code);
-
-        % Independence constraint
-        \draw [magenta, dashed, ->] ($(inter1) + (-0.15,-0.15)$) -- ($(output) + (-0.15,0.45)$) node[label={[label distance=0.01cm]110:\tiny{$\mathcal{L}_{attr}$}}];
-        \draw [red, dashed, ->] ($(output) + (-0.25,0.15)$) -- ($(generator) + (0.7,0.15)$) node[label={[label distance=0.01cm]10:\tiny{$\mathcal{L}_{rec}$}}];
-
-        % Discriminator loss
-        \draw [blue, dashed, ->] ($(discriminator) + (-0.15,0.45)$) -- ($(output) + (-0.15,-0.45)$) node[label={[label distance=0.01cm]250:\tiny{$\mathcal{L}_{adv}$}}];
-    \end{tikzpicture}
-  \end{frame}
-
-  \begin{frame}{Unrolled Architecture}
-    \tikzstyle{block} = [draw, rectangle, minimum height=2em]
-    \centering
-    \begin{tikzpicture}[auto, node distance=1cm,>=latex']
-      \node [label={[label distance=0.05cm]90:\tiny{input-text}}, block, name=input] (input) {$x$};
-      \node [label={[label distance=0.05cm]90:\tiny{encoder}}, purple, block, right = of input] (encoder1) {$E$};
-      \node [label={[label distance=0.05cm]90:\tiny{latent-code}}, block, right = of encoder1] (latent1) {$z$};
-      \node [label={[label distance=0.05cm]270:\tiny{structured-code}}, block, below = of latent1] (code) {$c$};
-      \node [label={[label distance=0.05cm]90:\tiny{generator}}, block, right = of latent1] (generator) {$G(z, c)$};
-      \node [label={[label distance=0.05cm]90:\tiny{output}}, block, right = of generator] (output) {$\hat{x}$};
+\begin{frame}{Architecture}
+  \tikzstyle{block} = [draw, rectangle, minimum height=2em]
+  \centering
+  \begin{tikzpicture}[auto, node distance=1cm,>=latex']
+      \node [label={[label distance=0.05cm]270:\tiny{input-text}}, block, name=input] (input) {$x$};
+      \node [label={[label distance=0.05cm]270:\tiny{encoder}}, purple, block, right = of input] (encoder) {$E$};
+      \node [label={[label distance=0.05cm]270:\tiny{latent-code}}, block, right = of encoder] (latent) {$z$};
+      \node [label={[label distance=0.05cm]270:\tiny{structured-code}}, block, below = of latent] (code) {$c$};
+      \node [label={[label distance=0.05cm]270:\tiny{generator}}, block, right = of latent] (generator) {$G(z, c)$};
+      \node [label={[label distance=0.05cm]0:\tiny{output}}, block, right = of generator] (output) {$\hat{x}$};
+      \node [coordinate, above = of output] (inter1) {};
       \node [label={[label distance=0.05cm]270:\tiny{discriminator}}, block, below = of output] (discriminator) {$D(c|\hat{x})$};
-      \node [label={[label distance=0.05cm]90:\tiny{encoder}}, purple, block, right = of output] (encoder2) {$E$};
-      \node [label={[label distance=0.05cm]90:\tiny{latent-code}}, block, right = of encoder2] (latent2) {$\hat{z}$};
 
-      \draw [->] (input) -- (encoder1);
-      \draw [->] (encoder1) -- (latent1);
-      \draw [->] (latent1) -- (generator);
+      \draw [->] (input) -- (encoder);
+      \draw [->] (encoder) -- (latent);
+      \draw [->] (latent) -- (generator);
       \draw [->] (code) -- (generator);
       \draw [->] (generator) -- (output);
+      \draw [-] (output) -- (inter1);
+      \draw [->] (inter1) -| (encoder);
       \draw [->] (output) -- (discriminator);
       \draw [->] (discriminator) -- (code);
-      \draw [->] (output) -- (encoder2);
-      \draw [->] (encoder2) -- (latent2);
 
       % Independence constraint
-      \draw [magenta, dashed, ->] ($(encoder2) + (-0.4,0.15)$) -- ($(output) + (0.25,0.15)$) node[label={[label distance=0.01cm]10:\tiny{$\mathcal{L}_{attr}$}}];
-      \draw [red, dashed, ->] ($(output) + (-0.25,0.15)$) -- ($(generator) + (0.7,0.15)$)node[label={[label distance=0.01cm]10:\tiny{$\mathcal{L}_{rec}$}}];
+      \draw [magenta, dashed, ->] ($(inter1) + (-0.15,-0.15)$) -- ($(output) + (-0.15,0.45)$) node[label={[label distance=0.01cm]110:\tiny{$\mathcal{L}_{attr}$}}];
+      \draw [red, dashed, ->] ($(output) + (-0.25,0.15)$) -- ($(generator) + (0.7,0.15)$) node[label={[label distance=0.01cm]10:\tiny{$\mathcal{L}_{rec}$}}];
 
       % Discriminator loss
-      \draw [blue, dashed, ->] ($(discriminator) + (-0.15,0.45)$) -- ($(output) + (-0.15,-0.45)$) node[label={[label distance=0.01cm]260:\tiny{$\mathcal{L}_{adv}$}}];
-    \end{tikzpicture}
-  \end{frame}
+      \draw [blue, dashed, ->] ($(discriminator) + (-0.15,0.45)$) -- ($(output) + (-0.15,-0.45)$) node[label={[label distance=0.01cm]250:\tiny{$\mathcal{L}_{adv}$}}];
+  \end{tikzpicture}
+\end{frame}
 
-  \begin{frame}{Optimization Objectives}
-    \textbf{Discriminator Optimization} 
+\begin{frame}{Unrolled Architecture}
+  \tikzstyle{block} = [draw, rectangle, minimum height=2em]
+  \centering
+  \begin{tikzpicture}[auto, node distance=1cm,>=latex']
+    \node [label={[label distance=0.05cm]90:\tiny{input-text}}, block, name=input] (input) {$x$};
+    \node [label={[label distance=0.05cm]90:\tiny{encoder}}, purple, block, right = of input] (encoder1) {$E$};
+    \node [label={[label distance=0.05cm]90:\tiny{latent-code}}, block, right = of encoder1] (latent1) {$z$};
+    \node [label={[label distance=0.05cm]270:\tiny{structured-code}}, block, below = of latent1] (code) {$c$};
+    \node [label={[label distance=0.05cm]90:\tiny{generator}}, block, right = of latent1] (generator) {$G(z, c)$};
+    \node [label={[label distance=0.05cm]90:\tiny{output}}, block, right = of generator] (output) {$\hat{x}$};
+    \node [label={[label distance=0.05cm]270:\tiny{discriminator}}, block, below = of output] (discriminator) {$D(c|\hat{x})$};
+    \node [label={[label distance=0.05cm]90:\tiny{encoder}}, purple, block, right = of output] (encoder2) {$E$};
+    \node [label={[label distance=0.05cm]90:\tiny{latent-code}}, block, right = of encoder2] (latent2) {$\hat{z}$};
 
-    \begin{itemize}
-      \item Maximize the likelihood of predicting the correct distribution of the structured code $c$ given the labeled examples $X_L$.
-      \begin{equation*}
-        \mathcal{L}_S(\theta_D) = - \mathbb{E}_{X_L}[log q_D(c_L|x_L)]
-      \end{equation*}
-      \item Maximize the likelihood of predicting the correct distribution of the structured code $c$ given the generated sentences $\hat{x}$. Also minimize the empirically observed Shannon entropy of the observed discriminator prediction $q_D(c'|\hat{x})$.
-      \begin{equation*}
-        \mathcal{L}_U(\theta_D) = - \mathbb{E}_{p_G(\hat{x}|z,c)p(z)p(c)} 
-        [log q_D(c|\hat{x}) + \beta \mathcal{H} q_D(c'|\hat{x})]
-      \end{equation*}
-    \end{itemize}
-  \end{frame}
+    \draw [->] (input) -- (encoder1);
+    \draw [->] (encoder1) -- (latent1);
+    \draw [->] (latent1) -- (generator);
+    \draw [->] (code) -- (generator);
+    \draw [->] (generator) -- (output);
+    \draw [->] (output) -- (discriminator);
+    \draw [->] (discriminator) -- (code);
+    \draw [->] (output) -- (encoder2);
+    \draw [->] (encoder2) -- (latent2);
 
-  \begin{frame}{Optimization Objectives}
-    \textbf{Generator Optimization}
+    % Independence constraint
+    \draw [magenta, dashed, ->] ($(encoder2) + (-0.4,0.15)$) -- ($(output) + (0.25,0.15)$) node[label={[label distance=0.01cm]10:\tiny{$\mathcal{L}_{attr}$}}];
+    \draw [red, dashed, ->] ($(output) + (-0.25,0.15)$) -- ($(generator) + (0.7,0.15)$)node[label={[label distance=0.01cm]10:\tiny{$\mathcal{L}_{rec}$}}];
 
-    \begin{itemize}
-      \item Maximize the likelihood of predicting the original document $x$, given the latent spaces and the generator $G(z,c)$.
-        \begin{eqnarray*}
-          \mathcal{L}_{VAE}(\theta_G, \theta_E; x) &=& 
-          - \mathbb{E}_{q_E(z|x)q_D(c|x)}[log p_G(x|z,c)] \\ & & 
-          + KL(q_E(z|x)||p(z))
-        \end{eqnarray*}
-      \item Maximize the likelihood of generating the output documents with the correct structured code $c$
-      \begin{equation*}
-        \mathcal{L}_{attr, c}(\theta_G) = - \mathbb{E}_{p(z)p(c)} 
-        [log q_D(c|\tilde{G_{\tau}}(z,c))]
-      \end{equation*}
-    \end{itemize}
-  \end{frame}
+    % Discriminator loss
+    \draw [blue, dashed, ->] ($(discriminator) + (-0.15,0.45)$) -- ($(output) + (-0.15,-0.45)$) node[label={[label distance=0.01cm]260:\tiny{$\mathcal{L}_{adv}$}}];
+  \end{tikzpicture}
+\end{frame}
 
-  \begin{frame}{Training Objectives}
-    \textbf{Additional Generator Optimization: Independence Constraint}
-    
-    The encoder is re-used to regenerate the latent distribution $z$ devoid of the structured code from the output distribution $\tilde{G_{\tau}}(z,c)$. 
+\begin{frame}{Optimization Objectives}
+  \textbf{Discriminator Optimization} 
+
+  \begin{itemize}
+    \item Maximize the likelihood of predicting the correct distribution of the structured code $c$ given the labeled examples $X_L$.
     \begin{equation*}
-      \mathcal{L}_{attr, z}(\theta_G) = - \mathbb{E}_{p(z)p(c)} 
-      [log q_E(z|\tilde{G_{\tau}}(z,c))]
+      \mathcal{L}_s(\theta_D) = - \mathbb{E}_{X_L}[log q_D(c_L|x_L)]
     \end{equation*}
-  \end{frame}
+    \item Maximize the likelihood of predicting the correct distribution of the structured code $c$ given the generated sentences $\hat{x}$. Also minimize the empirically observed Shannon entropy of the observed discriminator prediction $q_D(c'|\hat{x})$.
+    \begin{equation*}
+      \mathcal{L}_u(\theta_D) = - \mathbb{E}_{p_G(\hat{x}|z,c)p(z)p(c)} 
+      [log q_D(c|\hat{x}) + \beta \mathcal{H} q_D(c'|\hat{x})]
+    \end{equation*}
+  \end{itemize}
+\end{frame}
 
-  \begin{frame}{Training Objectives}
-    \textbf{Overall Optimization Objectives}
-    
-    The generator and discriminator objectives are trained in isolation.
+\begin{frame}{Optimization Objectives}
+  \textbf{Generator Optimization}
 
-    \textbf{Generator:}
-    \begin{eqnarray*}
-      \operatorname*{min}_{\theta_G} \mathcal{L}_G =
-        & \mathcal{L}_{VAE} & \text{(reconstruction loss)} \\ 
-        & + \lambda_c \mathcal{L}_{attr,c} & \text{(style entanglement)} \\ 
-        & + \lambda_z \mathcal{L}_{attr,z} & \text{(independence constraint)}
-    \end{eqnarray*}
+  \begin{itemize}
+    \item Maximize the likelihood of predicting the original document $x$, given the latent spaces and the generator $G(z,c)$.
+      \begin{eqnarray*}
+        \mathcal{L}_{VAE}(\theta_G, \theta_E; x) &=& 
+        - \mathbb{E}_{q_E(z|x)q_D(c|x)}[log p_G(x|z,c)] \\ & & 
+        + KL(q_E(z|x)||p(z))
+      \end{eqnarray*}
+    \item Maximize the likelihood of generating the output documents with the correct structured code $c$
+    \begin{equation*}
+      \mathcal{L}_{attr, c}(\theta_G) = - \mathbb{E}_{p(z)p(c)} 
+      [log q_D(c|\tilde{G_{\tau}}(z,c))]
+    \end{equation*}
+  \end{itemize}
+\end{frame}
 
-    \textbf{Discriminator:}
-    \begin{eqnarray*}
-      \operatorname*{min}_{\theta_D} \mathcal{L}_D =
-        & \mathcal{L}_{S} & \text{(pretrained classifier loss)} \\
-        & + \lambda_u \mathcal{L}_{attr,u} & \text{(style prediction \& prediction entropy)}
-    \end{eqnarray*}
+\begin{frame}{Training Objectives}
+  \textbf{Additional Generator Optimization: Independence Constraint}
+  
+  The encoder is re-used to regenerate the latent distribution $z$ devoid of the structured code from the output distribution $\tilde{G_{\tau}}(z,c)$. 
+  \begin{equation*}
+    \mathcal{L}_{attr, z}(\theta_G) = - \mathbb{E}_{p(z)p(c)} 
+    [log q_E(z|\tilde{G_{\tau}}(z,c))]
+  \end{equation*}
+\end{frame}
 
-  \end{frame}
+\begin{frame}{Training Objectives}
+  \textbf{Overall Optimization Objectives}
+  
+  The generator and discriminator objectives are trained in isolation.
 
+  \textbf{Generator:}
+  \begin{eqnarray*}
+    \operatorname*{min}_{\theta_G} \mathcal{L}_G =
+      & \mathcal{L}_{VAE} & \text{(reconstruction loss)} \\ 
+      & + \lambda_c \mathcal{L}_{attr,c} & \text{(style entanglement)} \\ 
+      & + \lambda_z \mathcal{L}_{attr,z} & \text{(independence constraint)}
+  \end{eqnarray*}
+
+  \textbf{Discriminator:}
+  \begin{eqnarray*}
+    \operatorname*{min}_{\theta_D} \mathcal{L}_D =
+      & \mathcal{L}_{s} & \text{(labeled example classification)} \\
+      & + \lambda_u \mathcal{L}_{attr,u} & \text{(synthesized example classification)}
+  \end{eqnarray*}
+\end{frame}
+
+\begin{frame}{Algorithm}
+\begin{algorithm}[H]
+  \centering
+  \begin{algorithmic}[1]
+  \REQUIRE A large corpus of unlabeled sentences $\mathcal{X}=\{x\}$ \\
+  \quad A few sentence attribute labels $\mathcal{X}_L = \{(x_L,c_L)\}$ \\
+  \quad Parameters: $\lambda_c, \lambda_z, \lambda_u, \beta$  -- balancing parameters \\
+  \STATE Initialize the base VAE by minimizing $\mathcal{L}_{VAE}$ on $\mathcal{X}$
+  \REPEAT
+      \STATE Train the discriminator $D$ by minimizing $\mathcal{L}_u$
+      \STATE Train the generator $G$ and the encoder $E$ by minimizing $\mathcal{L}_G$ and $\mathcal{L}_{VAE}$, respectively.
+  \UNTIL{convergence}
+  \ENSURE Sentence generator $G$ conditioned on disentangled representation $(z,c)$
+  \end{algorithmic}
+  \end{algorithm}
+\end{frame}
+
+\section{Experimental Setup}
+\begin{frame}{Experimental Setup}
+  \textbf{Simple Generative Reconstruction}
+  
+  350K IMDB movie reviews; sentence length $\leq 15$; total sentences $= 1.4M$; vocab size $= 16K$
+\end{frame}
+
+\begin{frame}{Experimental Setup}
+  \textbf{Sentiment Classification and Conditioned Generation}
+  
+  \begin{itemize}
+    \item \textbf{Stanford Sentiment Treebank-2 \cite{socher2013recursive}}: 2837 training examples with sentence length $\leq 15$ \& binary sentiment annotations.
+    \item \textbf{Sentiment Lexicon \cite{wilson2005recognizing}}:  2700 words with sentiment labels. The lexicon is used for training by treating the words as sentences.
+    \item \textbf{IMDB}: $5K/1K/10K$ sentences in train/dev/test by randomly selecting positive and negative IMDB reviews.
+  \end{itemize}
+  \bibliographystyle{unsrt}
+\end{frame}
+
+\begin{frame}{Experimental Setup}
+  \textbf{Tense Classification and Conditioned Generation}
+  
+  \href{http://timeml.org}{TimeBank} lexicon of 5250 words and phrases labeled with one of {“past”, “present”, “future”}. The lexicon mainly consists of verbs in different tenses (e.g., “was”, “will be”) as well as time expressions (e.g., “in the future”).
+\end{frame}
+
+\begin{frame}{Experimental Setup}
+  \textbf{Parameters}
+  \begin{itemize}
+    \item The generator and encoder are set as single-layer LSTM RNNs with input/hidden dimension of 300 and max decoding time-steps of 15
+    \item Discriminators are set as Convolutional Nets
+    \item VAE KL divergence weight linearly annealed from 0 to 1 during training.
+    \item Balancing $\lambda$ parameters all set to 0.1, $\beta$ is selected on the dev sets
+  \end{itemize}
+\end{frame}
+
+\bibliography{toward-controlled-generation-of-text}
 \end{document}
