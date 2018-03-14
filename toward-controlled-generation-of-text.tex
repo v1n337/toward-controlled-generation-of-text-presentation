@@ -50,17 +50,16 @@
 
   \begin{frame}{Architecture}
     \tikzstyle{block} = [draw, rectangle, minimum height=2em]
-
-    \begin{center}
+    \centering
     \begin{tikzpicture}[auto, node distance=1cm,>=latex']
-        \node [block, name=input] (input) {$x$};
-        \node [purple, block, right = of input] (encoder) {$E$};
-        \node [block, right = of encoder] (latent) {$z$};
-        \node [block, below = of latent] (code) {$c$};
-        \node [block, right = of latent] (generator) {$G(z, c)$};
-        \node [block, right = of generator] (output) {$\hat{x}$};
+        \node [label={[label distance=0.05cm]270:\tiny{input-text}}, block, name=input] (input) {$x$};
+        \node [label={[label distance=0.05cm]270:\tiny{encoder}}, purple, block, right = of input] (encoder) {$E$};
+        \node [label={[label distance=0.05cm]270:\tiny{latent-code}}, block, right = of encoder] (latent) {$z$};
+        \node [label={[label distance=0.05cm]270:\tiny{structured-code}}, block, below = of latent] (code) {$c$};
+        \node [label={[label distance=0.05cm]270:\tiny{generator}}, block, right = of latent] (generator) {$G(z, c)$};
+        \node [label={[label distance=0.05cm]0:\tiny{output}}, block, right = of generator] (output) {$\hat{x}$};
         \node [coordinate, above = of output] (inter1) {};
-        \node [block, below = of output] (discriminator) {$D(c|\hat{x})$};
+        \node [label={[label distance=0.05cm]270:\tiny{discriminator}}, block, below = of output] (discriminator) {$D(c|\hat{x})$};
 
         \draw [->] (input) -- (encoder);
         \draw [->] (encoder) -- (latent);
@@ -73,29 +72,27 @@
         \draw [->] (discriminator) -- (code);
 
         % Independence constraint
-        \draw [red, dashed, ->] ($(inter1) + (-0.15,-0.15)$) -- ($(output) + (-0.15,0.45)$);
-        \draw [red, dashed, ->] ($(output) + (-0.25,0.15)$) -- ($(generator) + (0.7,0.15)$);
+        \draw [magenta, dashed, ->] ($(inter1) + (-0.15,-0.15)$) -- ($(output) + (-0.15,0.45)$) node[label={[label distance=0.01cm]110:\tiny{$\mathcal{L}_{attr}$}}];
+        \draw [red, dashed, ->] ($(output) + (-0.25,0.15)$) -- ($(generator) + (0.7,0.15)$) node[label={[label distance=0.01cm]10:\tiny{$\mathcal{L}_{rec}$}}];
 
         % Discriminator loss
-        \draw [blue, dashed, ->] ($(discriminator) + (-0.15,0.45)$) -- ($(output) + (-0.15,-0.45)$);
-        \draw [blue, dashed, ->] ($(output) + (-0.25,-0.15)$) -- ($(generator) + (0.7,-0.15)$);
+        \draw [blue, dashed, ->] ($(discriminator) + (-0.15,0.45)$) -- ($(output) + (-0.15,-0.45)$) node[label={[label distance=0.01cm]250:\tiny{$\mathcal{L}_{adv}$}}];
     \end{tikzpicture}
-  \end{center}
   \end{frame}
 
   \begin{frame}{Unrolled Architecture}
     \tikzstyle{block} = [draw, rectangle, minimum height=2em]
-    \begin{center}
-    \begin{tikzpicture}[auto, node distance=1.1cm,>=latex']
-      \node [block, name=input] (input) {$x$};
-      \node [purple, block, right = of input] (encoder1) {$E$};
-      \node [block, right = of encoder1] (latent1) {$z$};
-      \node [block, below = of latent1] (code) {$c$};
-      \node [block, right = of latent1] (generator) {$G(z, c)$};
-      \node [block, right = of generator] (output) {$\hat{x}$};
-      \node [block, below = of output] (discriminator) {$D(c|\hat{x})$};
-      \node [purple, block, right = of output] (encoder2) {$E$};
-      \node [block, right = of encoder2] (latent2) {$\hat{z}$};
+    \centering
+    \begin{tikzpicture}[auto, node distance=1cm,>=latex']
+      \node [label={[label distance=0.05cm]90:\tiny{input-text}}, block, name=input] (input) {$x$};
+      \node [label={[label distance=0.05cm]90:\tiny{encoder}}, purple, block, right = of input] (encoder1) {$E$};
+      \node [label={[label distance=0.05cm]90:\tiny{latent-code}}, block, right = of encoder1] (latent1) {$z$};
+      \node [label={[label distance=0.05cm]270:\tiny{structured-code}}, block, below = of latent1] (code) {$c$};
+      \node [label={[label distance=0.05cm]90:\tiny{generator}}, block, right = of latent1] (generator) {$G(z, c)$};
+      \node [label={[label distance=0.05cm]90:\tiny{output}}, block, right = of generator] (output) {$\hat{x}$};
+      \node [label={[label distance=0.05cm]270:\tiny{discriminator}}, block, below = of output] (discriminator) {$D(c|\hat{x})$};
+      \node [label={[label distance=0.05cm]90:\tiny{encoder}}, purple, block, right = of output] (encoder2) {$E$};
+      \node [label={[label distance=0.05cm]90:\tiny{latent-code}}, block, right = of encoder2] (latent2) {$\hat{z}$};
 
       \draw [->] (input) -- (encoder1);
       \draw [->] (encoder1) -- (latent1);
@@ -108,14 +105,28 @@
       \draw [->] (encoder2) -- (latent2);
 
       % Independence constraint
-      \draw [red, dashed, ->] ($(encoder2) + (-0.4,0.15)$) -- ($(output) + (0.25,0.15)$);
-      \draw [red, dashed, ->] ($(output) + (-0.25,0.15)$) -- ($(generator) + (0.7,0.15)$);
+      \draw [magenta, dashed, ->] ($(encoder2) + (-0.4,0.15)$) -- ($(output) + (0.25,0.15)$) node[label={[label distance=0.01cm]10:\tiny{$\mathcal{L}_{attr}$}}];
+      \draw [red, dashed, ->] ($(output) + (-0.25,0.15)$) -- ($(generator) + (0.7,0.15)$)node[label={[label distance=0.01cm]10:\tiny{$\mathcal{L}_{rec}$}}];
 
       % Discriminator loss
-      \draw [blue, dashed, ->] ($(discriminator) + (-0.15,0.45)$) -- ($(output) + (-0.15,-0.45)$);
-      \draw [blue, dashed, ->] ($(output) + (-0.25,-0.15)$) -- ($(generator) + (0.7,-0.15)$);
+      \draw [blue, dashed, ->] ($(discriminator) + (-0.15,0.45)$) -- ($(output) + (-0.15,-0.45)$) node[label={[label distance=0.01cm]260:\tiny{$\mathcal{L}_{adv}$}}];
     \end{tikzpicture}
-    \end{center}
+  \end{frame}
+
+  \begin{frame}{Optimization Objectives}
+    \textbf{Discriminator Optimization} 
+
+    \begin{itemize}
+      \item Maximize the likelihood of predicting the correct distribution of the structured code $c$ given the labeled examples $X_L$.
+      \begin{equation*}
+        \mathcal{L}_S(\theta_D) = - \mathbb{E}_{X_L}[log q_D(c_L|x_L)]
+      \end{equation*}
+      \item Maximize the likelihood of predicting the correct distribution of the structured code $c$ given the generated sentences $\hat{x}$. Also minimize the empirically observed Shannon entropy of the observed discriminator prediction $q_D(c'|\hat{x})$.
+      \begin{equation*}
+        \mathcal{L}_U(\theta_D) = - \mathbb{E}_{p_G(\hat{x}|z,c)p(z)p(c)} 
+        [log q_D(c|\hat{x}) + \beta \mathcal{H} q_D(c'|\hat{x})]
+      \end{equation*}
+    \end{itemize}
   \end{frame}
 
   \begin{frame}{Optimization Objectives}
@@ -132,22 +143,6 @@
       \begin{equation*}
         \mathcal{L}_{attr, c}(\theta_G) = - \mathbb{E}_{p(z)p(c)} 
         [log q_D(c|\tilde{G_{\tau}}(z,c))]
-      \end{equation*}
-    \end{itemize}
-  \end{frame}
-
-  \begin{frame}{Optimization Objectives}
-    \textbf{Discriminator Optimization} 
-
-    \begin{itemize}
-      \item Maximize the likelihood of predicting the correct distribution of the structured code $c$ given the labeled examples $X_L$.
-      \begin{equation*}
-        \mathcal{L}_S(\theta_D) = - \mathbb{E}_{X_L}[log q_D(c_L|x_L)]
-      \end{equation*}
-      \item Maximize the likelihood of predicting the correct distribution of the structured code $c$ given the generated sentences $\hat{x}$. Also minimize the empirically observed Shannon entropy of the observed discriminator prediction $q_D(c'|\hat{x})$.
-      \begin{equation*}
-        \mathcal{L}_U(\theta_D) = - \mathbb{E}_{p_G(\hat{x}|z,c)p(z)p(c)} 
-        [log q_D(c|\hat{x}) + \beta \mathcal{H} q_D(c'|\hat{x})]
       \end{equation*}
     \end{itemize}
   \end{frame}
