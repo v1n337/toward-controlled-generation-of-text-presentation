@@ -1,15 +1,14 @@
 \documentclass{beamer}
-  \usepackage{tikz}
-  \usepackage{amsmath}
-  \usepackage{svg}
-  
-  \usetikzlibrary{shapes,arrows,positioning,calc}
-  \usetheme{metropolis}
+\usepackage{tikz}
+\usepackage{amsmath}
 
-  \title{Toward Controlled Generation of Text}
-  \date{}
-  \author{Hu, Yang, Liang, Salakhutdinov \& Xing}
-  \institute{ICML 2017}
+\usetikzlibrary{shapes,arrows,positioning,calc}
+\usetheme{metropolis}
+
+\title{Toward Controlled Generation of Text}
+\date{}
+\author{Hu, Yang, Liang, Salakhutdinov \& Xing}
+\institute{ICML 2017}
 
 \begin{document}
   \maketitle
@@ -23,12 +22,13 @@
           0.21 & 0.32 & 0.74 & 0.43 \\  
           \hline
         \end{tabular}
-      \end{center}
-      {\Huge$$\Downarrow$$}
-      \begin{center}
+        {\Huge$$\Downarrow$$}
         \begin{tabular}{ | c | c | c | c | }
           \hline
           0.68 & 0.12 & 0.33 & {\color{red}\textbf{1.0}} \\  
+          \hline
+          \hline
+          0.68 & 0.12 & 0.33 & {\color{red}\textbf{0.0}} \\  
           \hline
         \end{tabular}
       \end{center}
@@ -155,6 +155,28 @@
       \mathcal{L}_{attr, z}(\theta_G) = - \mathbb{E}_{p(z)p(c)} 
       [log q_E(z|\tilde{G_{\tau}}(z,c))]
     \end{equation*}
+  \end{frame}
+
+  \begin{frame}{Training Objectives}
+    \textbf{Overall Optimization Objectives}
+    
+    The generator and discriminator objectives are trained in isolation.
+
+    \textbf{Generator:}
+    \begin{eqnarray*}
+      \operatorname*{min}_{\theta_G} \mathcal{L}_G =
+        & \mathcal{L}_{VAE} & \text{(reconstruction loss)} \\ 
+        & + \lambda_c \mathcal{L}_{attr,c} & \text{(style entanglement)} \\ 
+        & + \lambda_z \mathcal{L}_{attr,z} & \text{(independence constraint)}
+    \end{eqnarray*}
+
+    \textbf{Discriminator:}
+    \begin{eqnarray*}
+      \operatorname*{min}_{\theta_D} \mathcal{L}_D =
+        & \mathcal{L}_{S} & \text{(pretrained classifier loss)} \\
+        & + \lambda_u \mathcal{L}_{attr,u} & \text{(style prediction \& prediction entropy)}
+    \end{eqnarray*}
+
   \end{frame}
 
 \end{document}
