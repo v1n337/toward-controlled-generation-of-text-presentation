@@ -16,7 +16,6 @@
 \begin{document}
 \maketitle
 
-\section{Motivation}
 \begin{frame}{Motivation}
   Interpretable latent space representations
   \begin{center}
@@ -37,18 +36,18 @@
   \end{center}
 \end{frame}
 
-\section{Method}
 \begin{frame}{Notation}
-  \begin{itemize}
-    \item $x \Rightarrow$ \textbf{source corpus}
-    \item $\hat{x} \Rightarrow$ \textbf{output corpus}
-    \item $c \Rightarrow$ \textbf{structured code} is a known label for each document
-    \item $z \Rightarrow$ \textbf{unstructured latent code}
-    \item $E \Rightarrow$ \textbf{encoder} parameterized to generate $z$, 
-    \item $G \Rightarrow$ \textbf{decoder/generator} produces $\hat{x}$ conditioned on $(z, c)$.
-    \item $D \Rightarrow$ \textbf{discriminator} predicts $c$ given $\hat{x}$.
-    \item $\tau \Rightarrow$ \textbf{softmax temperature} for decoder word prediction.
-  \end{itemize}
+  \large
+  \begin{tabular}{ l c l } 
+    $x$ & $\Rightarrow$ & \textbf{source corpus} \\
+    $\hat{x}$ & $\Rightarrow$ & \textbf{output corpus} \\
+    $c$ & $\Rightarrow$ & \textbf{structured code}, known label for each document \\
+    $z$ & $\Rightarrow$ & \textbf{unstructured latent code} \\
+    $E$ & $\Rightarrow$ & \textbf{encoder}, parameterized to generate $z$  \\
+    $G$ & $\Rightarrow$ & \textbf{decoder/generator}, produces $\hat{x}$ conditioned on $(z, c)$ \\
+    $D$ & $\Rightarrow$ & \textbf{discriminator}, predicts $c$ given $\hat{x}$. \\
+    $\tau$ & $\Rightarrow$ & \textbf{softmax temperature}, for decoder word prediction \\
+  \end{tabular}
 \end{frame}
 
 \begin{frame}{Architecture}
