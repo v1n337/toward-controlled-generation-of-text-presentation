@@ -16,6 +16,7 @@
 \begin{document}
 \maketitle
 
+\section{Motivation}
 \begin{frame}{Motivation}
   Interpretable latent space representations
   \begin{center}
@@ -36,6 +37,7 @@
   \end{center}
 \end{frame}
 
+\section{Method}
 \begin{frame}{Notation}
   \large
   \begin{tabular}{ l c l } 
@@ -202,14 +204,14 @@
   \includegraphics[width=\textwidth]{images/wake-sleep.pdf}
 \end{frame}
 
-\section{Experimental Setup}
-\begin{frame}{Experimental Setup}
+\section{Experiments}
+\begin{frame}{Experiments}
   \textbf{Simple Generative Reconstruction}
   
   350K IMDB movie reviews; sentence length $\leq 15$; total sentences $= 1.4M$; vocab size $= 16K$
 \end{frame}
 
-\begin{frame}{Experimental Setup}
+\begin{frame}{Experiments}
   \textbf{Sentiment Classification and Conditioned Generation}
   
   \begin{itemize}
@@ -220,13 +222,13 @@
   \bibliographystyle{unsrt}
 \end{frame}
 
-\begin{frame}{Experimental Setup}
+\begin{frame}{Experiments}
   \textbf{Tense Classification and Conditioned Generation}
   
   \href{http://timeml.org}{TimeBank} lexicon of 5250 words and phrases labeled with one of {“past”, “present”, “future”}. The lexicon mainly consists of verbs in different tenses (e.g., “was”, “will be”) as well as time expressions (e.g., “in the future”).
 \end{frame}
 
-\begin{frame}{Experimental Setup}
+\begin{frame}{Experiments}
   \textbf{Parameters}
   \begin{itemize}
     \item The generator and encoder are set as single-layer LSTM RNNs with input/hidden dimension of 300 and max decoding time-steps of 15
@@ -236,6 +238,7 @@
   \end{itemize}
 \end{frame}
 
+\section{Results}
 \begin{frame}{Results}
   \centering
   \includegraphics[width=\textwidth]{images/senti.pdf}
@@ -266,6 +269,7 @@
     \end{tabular}    
   \end{table}
 \end{frame}
+
 
 {\tiny \bibliography{toward-controlled-generation-of-text}}
 \end{document}
