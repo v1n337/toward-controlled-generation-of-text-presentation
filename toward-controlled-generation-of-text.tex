@@ -17,24 +17,30 @@
 \maketitle
 
 \section{Motivation}
+
 \begin{frame}{Motivation}
+  \centering
+  \includegraphics[width=.9\textwidth]{images/autoencoder.png}
+  {\tiny \footnote{https://commons.wikimedia.org/wiki/File:Autoencoder\_structure.png}}
+\end{frame}
+
+\begin{frame}{Motivation}
+  \centering
   Interpretable latent space representations
-  \begin{center}
-    \begin{tabular}{ | c | c | c | c | }
-      \hline
-      0.21 & 0.32 & 0.74 & 0.43 \\
-      \hline
-    \end{tabular}
-    {\Huge$$\Downarrow$$}
-    \begin{tabular}{ | c | c | c | c | }
-      \hline
-      0.68 & 0.12 & 0.33 & {\color{red}\textbf{1.0}} \\
-      \hline
-      \hline
-      0.68 & 0.12 & 0.33 & {\color{red}\textbf{0.0}} \\
-      \hline
-    \end{tabular}
-  \end{center}
+  \begin{tabular}{ | c | c | c | c | }
+    \hline
+    0.21 & 0.32 & 0.74 & 0.43 \\
+    \hline
+  \end{tabular}
+  {\Huge$$\Downarrow$$}
+  \begin{tabular}{ | c | c | c | c | }
+    \hline
+    0.68 & 0.12 & 0.33 & {\color{red}\textbf{1.0}} \\
+    \hline
+    \hline
+    0.68 & 0.12 & 0.33 & {\color{red}\textbf{0.0}} \\
+    \hline
+  \end{tabular}
 \end{frame}
 
 \section{Method}
@@ -215,8 +221,8 @@
   \textbf{Sentiment Classification and Conditioned Generation}
 
   \begin{itemize}
-    \item \textbf{Stanford Sentiment Treebank-2 \cite{socher2013recursive}}: 2837 training examples with sentence length $\leq 15$ \& binary sentiment annotations.
-    \item \textbf{Sentiment Lexicon \cite{wilson2005recognizing}}:  2700 words with sentiment labels. The lexicon is used for training by treating the words as sentences.
+    \item \textbf{Stanford Sentiment Treebank-2}: 2837 training examples with sentence length $\leq 15$ \& binary sentiment annotations.
+    \item \textbf{Sentiment Lexicon}:  2700 words with sentiment labels. The lexicon is used for training by treating the words as sentences.
     \item \textbf{IMDB}: $5K/1K/10K$ sentences in train/dev/test by randomly selecting positive and negative IMDB reviews.
   \end{itemize}
   \bibliographystyle{unsrt}
@@ -278,13 +284,6 @@
     \hline \\
     this is just awful & $\Rightarrow$ & this is pure genius
   \end{tabular}
-\end{frame}
-
-
-\begin{frame}[shrink=20]
-  \frametitle{References}
-  \bibliographystyle{unsrt}
-  \bibliography{toward-controlled-generation-of-text}
 \end{frame}
 
 \end{document}
