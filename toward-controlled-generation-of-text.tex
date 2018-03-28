@@ -39,6 +39,46 @@
         I hate this movie & $\rightarrow$ \\
       \end{tabular} \\
       \vspace{1.8cm}
+      {\color{white} \begin{tabular}{ c c }
+        I love this movie & $\rightarrow$ \\
+        I hate this movie & $\rightarrow$ \\
+      \end{tabular}}
+    \end{column}
+    \hfill
+    \begin{column}{.6\textwidth}
+      \centering
+      \begin{tabular}{ | c | c | c | c | }
+        \hline
+        $0.21$ & $0.32$ & $0.74$ & 0$.43$ \\
+        \hline
+        $0.45$ & $0.78$ & $0.97$ & 0$.17$ \\
+        \hline
+      \end{tabular}
+      {\color{white}{\Huge$$\Downarrow$$}
+      \begin{tabular}{ | c | c | c | c | }
+        \hline
+        $0.68$ & $0.12$ & $0.33$ & $1.0$ \\
+        \hline
+        \hline
+        $0.68$ & $0.12$ & $0.33$ & $0.0$ \\
+        \hline
+      \end{tabular}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Motivation}
+  \centering
+  {\LARGE Interpretable latent space representations} \\
+  \vspace{1cm}
+  \begin{columns}[T] % align columns
+    \begin{column}{.3\textwidth}
+      \centering
+      \begin{tabular}{ c c }
+        I love this movie & $\rightarrow$ \\
+        I hate this movie & $\rightarrow$ \\
+      \end{tabular}\\
+      \vspace{1.8cm}
       \begin{tabular}{ c c }
         I love this movie & $\rightarrow$ \\
         I hate this movie & $\rightarrow$ \\
@@ -49,18 +89,18 @@
       \centering
       \begin{tabular}{ | c | c | c | c | }
         \hline
-        0.21 & 0.32 & 0.74 & 0.43 \\
+        $0.21$ & $0.32$ & $0.74$ & 0$.43$ \\
         \hline
-        0.45 & 0.78 & 0.97 & 0.17 \\
+        $0.45$ & $0.78$ & $0.97$ & 0$.17$ \\
         \hline
       \end{tabular}
       {\Huge$$\Downarrow$$}
       \begin{tabular}{ | c | c | c | c | }
         \hline
-        0.68 & 0.12 & 0.33 & {\color{red}\textbf{1.0}} \\
+        $0.68$ & $0.12$ & $0.33$ & {\color{red}$1.0$} \\
         \hline
         \hline
-        0.68 & 0.12 & 0.33 & {\color{red}\textbf{0.0}} \\
+        $0.68$ & $0.12$ & $0.33$ & {\color{red}$0.0$} \\
         \hline
       \end{tabular}
     \end{column}
@@ -299,11 +339,8 @@
   \small
   \begin{tabular}{ p{.4\linewidth} p{.05\linewidth} p{.4\linewidth} }
     the acting is bad & $\Rightarrow$ & the movie is so much fun \\ \\ 
-    \hline \\
     none of this is very original & $\Rightarrow$ & highly recommended viewing for its courage , and ideas \\ \\
-    \hline \\
     too bland & $\Rightarrow$ & highly watchable \\ \\
-    \hline \\
     i can analyze this movie without more than three words & $\Rightarrow$ & i highly recommend this film to anyone who appreciates music
   \end{tabular}
 \end{frame}
@@ -315,11 +352,8 @@
   \small
   \begin{tabular}{ p{.4\linewidth} p{.05\linewidth} p{.4\linewidth} }
     the film is strictly routine & $\Rightarrow$ & the film is full of imagination \\  \\
-    \hline \\
     after watching this movie , i felt that disappointed & $\Rightarrow$ & after seeing this film , i 'm a fan \\  \\
-    \hline \\
     the acting is uniformly bad either & $\Rightarrow$ & the performances are uniformly good \\  \\
-    \hline \\
     this is just awful & $\Rightarrow$ & this is pure genius
   \end{tabular}
 \end{frame}
@@ -334,15 +368,15 @@
       \item Encoder independency constraint
       \item Decoded style entanglement constraint
     \end{itemize}
-    \end{column}%
-    \hfill%
+    \end{column}
+    \hfill
     \begin{column}{.48\textwidth}
     \color{usccardinal}\rule{\linewidth}{4pt}
     \begin{itemize}
       \item Constraints don't explicitly provide disentanglement
       \item Susceptible to style bypassing
     \end{itemize}
-    \end{column}%
+    \end{column}
   \end{columns}
 \end{frame}
 
