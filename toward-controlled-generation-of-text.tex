@@ -22,16 +22,16 @@
   \begin{center}
     \begin{tabular}{ | c | c | c | c | }
       \hline
-      0.21 & 0.32 & 0.74 & 0.43 \\  
+      0.21 & 0.32 & 0.74 & 0.43 \\
       \hline
     \end{tabular}
     {\Huge$$\Downarrow$$}
     \begin{tabular}{ | c | c | c | c | }
       \hline
-      0.68 & 0.12 & 0.33 & {\color{red}\textbf{1.0}} \\  
+      0.68 & 0.12 & 0.33 & {\color{red}\textbf{1.0}} \\
       \hline
       \hline
-      0.68 & 0.12 & 0.33 & {\color{red}\textbf{0.0}} \\  
+      0.68 & 0.12 & 0.33 & {\color{red}\textbf{0.0}} \\
       \hline
     \end{tabular}
   \end{center}
@@ -40,7 +40,7 @@
 \section{Method}
 \begin{frame}{Notation}
   \large
-  \begin{tabular}{ l c l } 
+  \begin{tabular}{ l c l }
     $x$ & $\Rightarrow$ & \textbf{source corpus} \\
     $\hat{x}$ & $\Rightarrow$ & \textbf{output corpus} \\
     $c$ & $\Rightarrow$ & \textbf{structured code}, known label for each document \\
@@ -118,7 +118,7 @@
 \end{frame}
 
 \begin{frame}{Optimization Objectives}
-  \textbf{Discriminator Optimization} 
+  \textbf{Discriminator Optimization}
 
   \begin{itemize}
     \item Maximize the likelihood of predicting the correct distribution of the structured code $c$ given the labeled examples $X_L$.
@@ -127,7 +127,7 @@
     \end{equation*}
     \item Maximize the likelihood of predicting the correct distribution of the structured code $c$ given the generated sentences $\hat{x}$. Also minimize the empirically observed Shannon entropy of the observed discriminator prediction $q_D(c'|\hat{x})$.
     \begin{equation*}
-      \mathcal{L}_u(\theta_D) = - \mathbb{E}_{p_G(\hat{x}|z,c)p(z)p(c)} 
+      \mathcal{L}_u(\theta_D) = - \mathbb{E}_{p_G(\hat{x}|z,c)p(z)p(c)}
       [log q_D(c|\hat{x}) + \beta \mathcal{H} q_D(c'|\hat{x})]
     \end{equation*}
   \end{itemize}
@@ -139,13 +139,13 @@
   \begin{itemize}
     \item Maximize the likelihood of predicting the original document $x$, given the latent spaces and the generator $G(z,c)$.
       \begin{eqnarray*}
-        \mathcal{L}_{VAE}(\theta_G, \theta_E; x) &=& 
-        - \mathbb{E}_{q_E(z|x)q_D(c|x)}[log p_G(x|z,c)] \\ & & 
+        \mathcal{L}_{VAE}(\theta_G, \theta_E; x) &=&
+        - \mathbb{E}_{q_E(z|x)q_D(c|x)}[log p_G(x|z,c)] \\ & &
         + KL(q_E(z|x)||p(z))
       \end{eqnarray*}
     \item Maximize the likelihood of generating the output documents with the correct structured code $c$
     \begin{equation*}
-      \mathcal{L}_{attr, c}(\theta_G) = - \mathbb{E}_{p(z)p(c)} 
+      \mathcal{L}_{attr, c}(\theta_G) = - \mathbb{E}_{p(z)p(c)}
       [log q_D(c|\tilde{G_{\tau}}(z,c))]
     \end{equation*}
   \end{itemize}
@@ -153,24 +153,24 @@
 
 \begin{frame}{Training Objectives}
   \textbf{Additional Generator Optimization: Independence Constraint}
-  
-  The encoder is re-used to regenerate the latent distribution $z$ devoid of the structured code from the output distribution $\tilde{G_{\tau}}(z,c)$. 
+
+  The encoder is re-used to regenerate the latent distribution $z$ devoid of the structured code from the output distribution $\tilde{G_{\tau}}(z,c)$.
   \begin{equation*}
-    \mathcal{L}_{attr, z}(\theta_G) = - \mathbb{E}_{p(z)p(c)} 
+    \mathcal{L}_{attr, z}(\theta_G) = - \mathbb{E}_{p(z)p(c)}
     [log q_E(z|\tilde{G_{\tau}}(z,c))]
   \end{equation*}
 \end{frame}
 
 \begin{frame}{Training Objectives}
   \textbf{Overall Optimization Objectives}
-  
+
   The generator and discriminator objectives are trained in isolation.
 
   \textbf{Generator:}
   \begin{eqnarray*}
     \operatorname*{min}_{\theta_G} \mathcal{L}_G =
-      & \mathcal{L}_{VAE} & \text{(reconstruction loss)} \\ 
-      & + \lambda_c \mathcal{L}_{attr,c} & \text{(style entanglement)} \\ 
+      & \mathcal{L}_{VAE} & \text{(reconstruction loss)} \\
+      & + \lambda_c \mathcal{L}_{attr,c} & \text{(style entanglement)} \\
       & + \lambda_z \mathcal{L}_{attr,z} & \text{(independence constraint)}
   \end{eqnarray*}
 
@@ -207,13 +207,13 @@
 \section{Experiments}
 \begin{frame}{Experiments}
   \textbf{Simple Generative Reconstruction}
-  
+
   350K IMDB movie reviews; sentence length $\leq 15$; total sentences $= 1.4M$; vocab size $= 16K$
 \end{frame}
 
 \begin{frame}{Experiments}
   \textbf{Sentiment Classification and Conditioned Generation}
-  
+
   \begin{itemize}
     \item \textbf{Stanford Sentiment Treebank-2 \cite{socher2013recursive}}: 2837 training examples with sentence length $\leq 15$ \& binary sentiment annotations.
     \item \textbf{Sentiment Lexicon \cite{wilson2005recognizing}}:  2700 words with sentiment labels. The lexicon is used for training by treating the words as sentences.
@@ -224,7 +224,7 @@
 
 \begin{frame}{Experiments}
   \textbf{Tense Classification and Conditioned Generation}
-  
+
   \href{http://timeml.org}{TimeBank} lexicon of 5250 words and phrases labeled with one of {“past”, “present”, “future”}. The lexicon mainly consists of verbs in different tenses (e.g., “was”, “will be”) as well as time expressions (e.g., “in the future”).
 \end{frame}
 
@@ -244,18 +244,18 @@
   \includegraphics[width=\textwidth]{images/senti.pdf}
 \end{frame}
 
-\begin{frame}{Results}  
+\begin{frame}{Results}
   \begin{table}
     \tiny
     \centering
-    \begin{tabular}{ c || c }
+    \begin{tabular}{ p{.5\linewidth} || p{.5\linewidth} }
     \centering
     {\small \textbf{w/ independence constraint}} & {\small\textbf{w/o independence constraint}} \\ \hline       \hline \\
       the film is strictly routine & the acting is bad \\
       $\Downarrow$ & $\Downarrow$ \\
       the film is full of imagination & the movie is so much fun \\ \\
       \hline \\
-      after watching this movie , i felt that disappointed & none of this is very original \\ 
+      after watching this movie , i felt that disappointed & none of this is very original \\
       $\Downarrow$ & $\Downarrow$ \\
       after seeing this film , i 'm a fan & highly recommended viewing for its courage , and ideas\\ \\
       \hline \\
@@ -263,13 +263,18 @@
       $\Downarrow$ & $\Downarrow$ \\
       the performances are uniformly good & highly watchable \\ \\
       \hline \\
-      this is just awful & i can analyze this movie without more than three words \\ 
+      this is just awful & i can analyze this movie without more than three words \\
       $\Downarrow$ & $\Downarrow$ \\
       this is pure genius & i highly recommend this film to anyone who appreciates music   \\ \\
-    \end{tabular}    
+    \end{tabular}
   \end{table}
 \end{frame}
 
 
-{\tiny \bibliography{toward-controlled-generation-of-text}}
+\begin{frame}[shrink=20]
+  \frametitle{References}
+  \bibliographystyle{unsrt}
+  {\footnotesize \bibliography{toward-controlled-generation-of-text}}
+\end{frame}
+
 \end{document}
