@@ -3,6 +3,10 @@
 \usepackage{amsmath}
 \usepackage{algorithm}
 \usepackage{algorithmic}
+% \usepackage[usenames,dvipsnames]{xcolor}
+
+\definecolor{usccardinal}{rgb}{0.6, 0.0, 0.0}
+\definecolor{tropicalrainforest}{rgb}{0.0, 0.46, 0.37}
 
 \usetikzlibrary{shapes,arrows,positioning,calc}
 \usetheme{metropolis}
@@ -81,12 +85,12 @@
       \draw [->] (output) -- (discriminator);
       \draw [->] (discriminator) -- (code);
 
-      % Independence constraint
-      \draw [magenta, dashed, ->] ($(inter1) + (-0.15,-0.15)$) -- ($(output) + (-0.15,0.45)$) node[label={[label distance=0.01cm]110:\tiny{$\mathcal{L}_{attr}$}}];
-      \draw [red, dashed, ->] ($(output) + (-0.25,0.15)$) -- ($(generator) + (0.7,0.15)$) node[label={[label distance=0.01cm]10:\tiny{$\mathcal{L}_{rec}$}}];
+      % Independency constraint
+      \draw [magenta, dashed, ->] ($(inter1) + (-0.15,-0.15)$) -- ($(output) + (-0.15,0.45)$) node[label={[label distance=0.01cm]110:\tiny{$\mathcal{L}_{attr}$}}] {};
+      \draw [red, dashed, ->] ($(output) + (-0.25,0.15)$) -- ($(generator) + (0.7,0.15)$) node[label={[label distance=0.01cm]10:\tiny{$\mathcal{L}_{rec}$}}] {};
 
       % Discriminator loss
-      \draw [blue, dashed, ->] ($(discriminator) + (-0.15,0.45)$) -- ($(output) + (-0.15,-0.45)$) node[label={[label distance=0.01cm]250:\tiny{$\mathcal{L}_{adv}$}}];
+      \draw [blue, dashed, ->] ($(discriminator) + (-0.15,0.45)$) -- ($(output) + (-0.15,-0.45)$) node[label={[label distance=0.01cm]250:\tiny{$\mathcal{L}_{adv}$}}] {};
   \end{tikzpicture}
 \end{frame}
 
@@ -114,12 +118,12 @@
     \draw [->] (output) -- (encoder2);
     \draw [->] (encoder2) -- (latent2);
 
-    % Independence constraint
-    \draw [magenta, dashed, ->] ($(encoder2) + (-0.4,0.15)$) -- ($(output) + (0.25,0.15)$) node[label={[label distance=0.01cm]10:\tiny{$\mathcal{L}_{attr}$}}];
-    \draw [red, dashed, ->] ($(output) + (-0.25,0.15)$) -- ($(generator) + (0.7,0.15)$)node[label={[label distance=0.01cm]10:\tiny{$\mathcal{L}_{rec}$}}];
+    % Independency constraint
+    \draw [magenta, dashed, ->] ($(encoder2) + (-0.4,0.15)$) -- ($(output) + (0.25,0.15)$) node[label={[label distance=0.01cm]10:\tiny{$\mathcal{L}_{attr}$}}] {};
+    \draw [red, dashed, ->] ($(output) + (-0.25,0.15)$) -- ($(generator) + (0.7,0.15)$)node[label={[label distance=0.01cm]10:\tiny{$\mathcal{L}_{rec}$}}] {};
 
     % Discriminator loss
-    \draw [blue, dashed, ->] ($(discriminator) + (-0.15,0.45)$) -- ($(output) + (-0.15,-0.45)$) node[label={[label distance=0.01cm]260:\tiny{$\mathcal{L}_{adv}$}}];
+    \draw [blue, dashed, ->] ($(discriminator) + (-0.15,0.45)$) -- ($(output) + (-0.15,-0.45)$) node[label={[label distance=0.01cm]260:\tiny{$\mathcal{L}_{adv}$}}] {};
   \end{tikzpicture}
 \end{frame}
 
@@ -158,7 +162,7 @@
 \end{frame}
 
 \begin{frame}{Training Objectives}
-  \textbf{Additional Generator Optimization: Independence Constraint}
+  \textbf{Additional Generator Optimization: Independency Constraint}
 
   The encoder is re-used to regenerate the latent distribution $z$ devoid of the structured code from the output distribution $\tilde{G_{\tau}}(z,c)$.
   \begin{equation*}
@@ -177,7 +181,7 @@
     \operatorname*{min}_{\theta_G} \mathcal{L}_G =
       & \mathcal{L}_{VAE} & \text{(reconstruction loss)} \\
       & + \lambda_c \mathcal{L}_{attr,c} & \text{(style entanglement)} \\
-      & + \lambda_z \mathcal{L}_{attr,z} & \text{(independence constraint)}
+      & + \lambda_z \mathcal{L}_{attr,z} & \text{(independency constraint)}
   \end{eqnarray*}
 
   \textbf{Discriminator:}
@@ -270,7 +274,7 @@
 
 \begin{frame}{Results}
   \centering
-  \textbf{Without `Independence Constraint'}
+  \textbf{Without `Independency Constraint'}
 
   \vspace{0.5cm}
   
@@ -288,7 +292,7 @@
 
 \begin{frame}{Results}
   \centering
-  {\large \textbf{With `Independence Constraint'}}
+  {\large \textbf{With `Independency Constraint'}}
   
   \vspace{0.5cm}
 
@@ -302,6 +306,33 @@
     \hline \\
     this is just awful & $\Rightarrow$ & this is pure genius
   \end{tabular}
+\end{frame}
+
+\section{Commentary}
+\begin{frame}{Commentary}
+  \begin{columns}[T] % align columns
+    \begin{column}{.48\textwidth}
+    \color{tropicalrainforest}\rule{\linewidth}{4pt}
+    \begin{itemize}
+      \item Non-parallel style transfer
+      \item Encoder independency constraint
+      \item Decoded style entanglement constraint
+    \end{itemize}
+    \end{column}%
+    \hfill%
+    \begin{column}{.48\textwidth}
+    \color{usccardinal}\rule{\linewidth}{4pt}
+    \begin{itemize}
+      \item Constraints don't explicitly provide disentanglement
+      \item Susceptible to style bypassing
+    \end{itemize}
+    \end{column}%
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \centering
+  \Huge{Questions?}
 \end{frame}
 
 \end{document}
