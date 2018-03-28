@@ -125,7 +125,7 @@
     \begin{equation*}
       \mathcal{L}_s(\theta_D) = - \mathbb{E}_{X_L}[log q_D(c_L|x_L)]
     \end{equation*}
-    \item Maximize the likelihood of predicting the correct distribution of the structured code $c$ given the generated sentences $\hat{x}$. Also minimize the empirically observed Shannon entropy of the observed discriminator prediction $q_D(c'|\hat{x})$.
+    \item Maximize the likelihood of predicting the correct distribution of the structured code $c$ given the generated sentences $\hat{x}$. Also minimize the empirically observed Shannon entropy of the discriminator predictions $q_D(c'|\hat{x})$.
     \begin{equation*}
       \mathcal{L}_u(\theta_D) = - \mathbb{E}_{p_G(\hat{x}|z,c)p(z)p(c)}
       [log q_D(c|\hat{x}) + \beta \mathcal{H} q_D(c'|\hat{x})]
@@ -245,29 +245,39 @@
 \end{frame}
 
 \begin{frame}{Results}
-  \begin{table}
-    \tiny
-    \centering
-    \begin{tabular}{ p{.5\linewidth} || p{.5\linewidth} }
-    \centering
-    {\small \textbf{w/ independence constraint}} & {\small\textbf{w/o independence constraint}} \\ \hline       \hline \\
-      the film is strictly routine & the acting is bad \\
-      $\Downarrow$ & $\Downarrow$ \\
-      the film is full of imagination & the movie is so much fun \\ \\
-      \hline \\
-      after watching this movie , i felt that disappointed & none of this is very original \\
-      $\Downarrow$ & $\Downarrow$ \\
-      after seeing this film , i 'm a fan & highly recommended viewing for its courage , and ideas\\ \\
-      \hline \\
-      the acting is uniformly bad either &  too bland \\
-      $\Downarrow$ & $\Downarrow$ \\
-      the performances are uniformly good & highly watchable \\ \\
-      \hline \\
-      this is just awful & i can analyze this movie without more than three words \\
-      $\Downarrow$ & $\Downarrow$ \\
-      this is pure genius & i highly recommend this film to anyone who appreciates music   \\ \\
-    \end{tabular}
-  \end{table}
+  \centering
+  \textbf{Without `Independence Constraint'}
+
+  \vspace{0.5cm}
+  
+  \small
+  \begin{tabular}{ p{.4\linewidth} p{.05\linewidth} p{.4\linewidth} }
+    the acting is bad & $\Rightarrow$ & the movie is so much fun \\ \\ 
+    \hline \\
+    none of this is very original & $\Rightarrow$ & highly recommended viewing for its courage , and ideas \\ \\
+    \hline \\
+    too bland & $\Rightarrow$ & highly watchable \\ \\
+    \hline \\
+    i can analyze this movie without more than three words & $\Rightarrow$ & i highly recommend this film to anyone who appreciates music
+  \end{tabular}
+\end{frame}
+
+\begin{frame}{Results}
+  \centering
+  {\large \textbf{With the independence constraint}}
+  
+  \vspace{0.5cm}
+
+  \small
+  \begin{tabular}{ p{.4\linewidth} p{.05\linewidth} p{.4\linewidth} }
+    the film is strictly routine & $\Rightarrow$ & the film is full of imagination \\  \\
+    \hline \\
+    after watching this movie , i felt that disappointed & $\Rightarrow$ & after seeing this film , i 'm a fan \\  \\
+    \hline \\
+    the acting is uniformly bad either & $\Rightarrow$ & the performances are uniformly good \\  \\
+    \hline \\
+    this is just awful & $\Rightarrow$ & this is pure genius
+  \end{tabular}
 \end{frame}
 
 
