@@ -1,5 +1,4 @@
 \documentclass{beamer}
-
 \usepackage{tikz}
 \usepackage{amsmath}
 \usepackage{algorithm}
@@ -7,6 +6,7 @@
 
 \usetikzlibrary{shapes,arrows,positioning,calc}
 \usetheme{metropolis}
+\setbeamercolor{background canvas}{bg=white}
 
 \title{Toward Controlled Generation of Text}
 \date{}
@@ -206,7 +206,7 @@
 
 \section{Experiments}
 \begin{frame}{Experiments}
-  \textbf{Simple Generative Reconstruction}
+  \textbf{Simple Reconstruction}
 
   350K IMDB movie reviews; sentence length $\leq 15$; total sentences $= 1.4M$; vocab size $= 16K$
 \end{frame}
@@ -264,7 +264,7 @@
 
 \begin{frame}{Results}
   \centering
-  {\large \textbf{With the independence constraint}}
+  {\large \textbf{With `Independence Constraint'}}
   
   \vspace{0.5cm}
 
@@ -284,7 +284,7 @@
 \begin{frame}[shrink=20]
   \frametitle{References}
   \bibliographystyle{unsrt}
-  {\footnotesize \bibliography{toward-controlled-generation-of-text}}
+  \bibliography{toward-controlled-generation-of-text}
 \end{frame}
 
 \end{document}
