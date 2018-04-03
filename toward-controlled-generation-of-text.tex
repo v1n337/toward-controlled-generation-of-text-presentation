@@ -29,7 +29,7 @@
 
 \begin{frame}{Motivation}
 	\centering
-	{\LARGE Interpretable Representation Learning} \\
+	{\Large Interpretable Representation Learning} \\
 	\vspace{1cm}
 	\begin{columns}[T] % align columns
 		\begin{column}{.3\textwidth}
@@ -69,7 +69,7 @@
 
 \begin{frame}{Motivation}
 	\centering
-	{\LARGE Interpretable Representation Learning} \\
+	{\Large Interpretable Representation Learning} \\
 	\vspace{1cm}
 	\begin{columns}[T] % align columns
 		\begin{column}{.3\textwidth}
@@ -224,7 +224,7 @@
 \begin{frame}{Training Objectives}
 	\textbf{Additional Generator Optimization: Independency Constraint}
 
-	The encoder is re-used to regenerate the latent distribution $z$ devoid of the structured code from the output distribution $\tilde{G_{\tau}}(z,c)$.
+	The encoder is re-used to regenerate the latent distribution $z$ devoid of the structured code $c$, from the output distribution $\tilde{G_{\tau}}(z,c)$.
 	\begin{equation*}
 		\mathcal{L}_{attr, z}(\theta_G) = - \mathbb{E}_{p(z)p(c)}
 		[log q_E(z|\tilde{G_{\tau}}(z,c))]
@@ -232,9 +232,6 @@
 \end{frame}
 
 \begin{frame}{Training Objectives}
-	\textbf{Overall Optimization Objectives}
-
-	The generator and discriminator objectives are trained in isolation.
 
 	\textbf{Generator:}
 	\begin{eqnarray*}
@@ -319,11 +316,11 @@
 \begin{frame}{Experiments}
 	\textbf{Parameters}
 	\begin{itemize}
-		\item The generator and encoder are set as single-layer LSTM RNNs with input/hidden dimension of 300 and max decoding time-steps of 15
+		\item The generator and encoder are set as single-layer LSTM RNNs with input/hidden dimension of 300 and max decoding time-step count of 15
 		\item Discriminators are set as Convolutional Nets
 		\item VAE KL-Divergence weight linearly annealed from 0 to 1 during training
-		\item Softmax temperature \tau annealed from 1 to 0
-		\item Balancing $\lambda$ parameters all set to 0.1, $\beta$ is selected on the dev sets
+		\item Softmax temperature $\tau$ annealed from 1 to 0
+		\item Balancing $\lambda$ weights all set to 0.1, $\beta$ is selected on the dev set
 	\end{itemize}
 \end{frame}
 
