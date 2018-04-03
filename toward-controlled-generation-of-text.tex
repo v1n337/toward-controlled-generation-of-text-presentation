@@ -198,7 +198,7 @@
 		\item Maximize the likelihood of predicting the correct distribution of the structured code $c$ given the generated sentences $\hat{x}$. Also minimize the empirically observed Shannon entropy of the discriminator predictions $q_D(c'|\hat{x})$.
 		      \begin{equation*}
 			      \mathcal{L}_u(\theta_D) = - \mathbb{E}_{p_G(\hat{x}|z,c)p(z)p(c)}
-			      [log q_D(c|\hat{x}) + \beta \mathcal{H} q_D(c'|\hat{x})]
+			      [log q_D(c|\hat{x}) + \beta \mathcal{H}(q_D(c'|\hat{x}))]
 		      \end{equation*}
 	\end{itemize}
 \end{frame}
@@ -321,7 +321,8 @@
 	\begin{itemize}
 		\item The generator and encoder are set as single-layer LSTM RNNs with input/hidden dimension of 300 and max decoding time-steps of 15
 		\item Discriminators are set as Convolutional Nets
-		\item VAE KL divergence weight linearly annealed from 0 to 1 during training.
+		\item VAE KL-Divergence weight linearly annealed from 0 to 1 during training
+		\item Softmax temperature \tau annealed from 1 to 0
 		\item Balancing $\lambda$ parameters all set to 0.1, $\beta$ is selected on the dev sets
 	\end{itemize}
 \end{frame}
