@@ -126,14 +126,14 @@
 	\tikzstyle{block} = [draw, rectangle, minimum height=2em]
 	\centering
 	\begin{tikzpicture}[auto, node distance=1cm,>=latex']
-		\node [label={[label distance=0.05cm]270:\tiny{input-text}}, block, name=input] (input) {$x$};
-		\node [label={[label distance=0.05cm]270:\tiny{encoder}}, purple, block, right = of input] (encoder) {$E$};
-		\node [label={[label distance=0.05cm]270:\tiny{latent-code}}, block, right = of encoder] (latent) {$z$};
-		\node [label={[label distance=0.05cm]270:\tiny{structured-code}}, block, below = of latent] (code) {$c$};
-		\node [label={[label distance=0.05cm]270:\tiny{generator}}, block, right = of latent] (generator) {$G(z, c)$};
-		\node [label={[label distance=0.05cm]0:\tiny{output}}, block, right = of generator] (output) {$\hat{x}$};
+		\node [label={[distance=0.05cm]270:\tiny{input-text}}, block] (input) {$x$};
+		\node [label={[distance=0.05cm]270:\tiny{encoder}}, purple, block, right = of input] (encoder) {$E$};
+		\node [label={[distance=0.05cm]270:\tiny{latent-code}}, block, right = of encoder] (latent) {$z$};
+		\node [label={[distance=0.05cm]270:\tiny{structured-code}}, block, below = of latent] (code) {$c$};
+		\node [label={[distance=0.05cm]270:\tiny{generator}}, block, right = of latent] (generator) {$G(z, c)$};
+		\node [label={[distance=0.05cm]0:\tiny{output}}, block, right = of generator] (output) {$\hat{x}$};
 		\node [coordinate, above = of output] (inter1) {};
-		\node [label={[label distance=0.05cm]270:\tiny{discriminator}}, block, below = of output] (discriminator) {$D(c|\hat{x})$};
+		\node [label={[distance=0.05cm]270:\tiny{discriminator}}, block, below = of output] (discriminator) {$D(c|\hat{x})$};
 
 		\draw [->] (input) -- (encoder);
 		\draw [->] (encoder) -- (latent);
@@ -158,15 +158,15 @@
 	\tikzstyle{block} = [draw, rectangle, minimum height=2em]
 	\centering
 	\begin{tikzpicture}[auto, node distance=1cm,>=latex']
-		\node [label={[label distance=0.05cm]90:\tiny{input-text}}, block, name=input] (input) {$x$};
-		\node [label={[label distance=0.05cm]90:\tiny{encoder}}, purple, block, right = of input] (encoder1) {$E$};
-		\node [label={[label distance=0.05cm]90:\tiny{latent-code}}, block, right = of encoder1] (latent1) {$z$};
-		\node [label={[label distance=0.05cm]270:\tiny{structured-code}}, block, below = of latent1] (code) {$c$};
-		\node [label={[label distance=0.05cm]90:\tiny{generator}}, block, right = of latent1] (generator) {$G(z, c)$};
-		\node [label={[label distance=0.05cm]90:\tiny{output}}, block, right = of generator] (output) {$\hat{x}$};
-		\node [label={[label distance=0.05cm]270:\tiny{discriminator}}, block, below = of output] (discriminator) {$D(c|\hat{x})$};
-		\node [label={[label distance=0.05cm]90:\tiny{encoder}}, purple, block, right = of output] (encoder2) {$E$};
-		\node [label={[label distance=0.05cm]90:\tiny{latent-code}}, block, right = of encoder2] (latent2) {$\hat{z}$};
+		\node [label={[distance=0.05cm]90:\tiny{input-text}}, block] (input) {$x$};
+		\node [label={[distance=0.05cm]90:\tiny{encoder}}, purple, block, right = of input] (encoder1) {$E$};
+		\node [label={[distance=0.05cm]90:\tiny{latent-code}}, block, right = of encoder1] (latent1) {$z$};
+		\node [label={[distance=0.05cm]270:\tiny{structured-code}}, block, below = of latent1] (code) {$c$};
+		\node [label={[distance=0.05cm]90:\tiny{generator}}, block, right = of latent1] (generator) {$G(z, c)$};
+		\node [label={[distance=0.05cm]90:\tiny{output}}, block, right = of generator] (output) {$\hat{x}$};
+		\node [label={[distance=0.05cm]270:\tiny{discriminator}}, block, below = of output] (discriminator) {$D(c|\hat{x})$};
+		\node [label={[distance=0.05cm]90:\tiny{encoder}}, purple, block, right = of output] (encoder2) {$E$};
+		\node [label={[distance=0.05cm]90:\tiny{latent-code}}, block, right = of encoder2] (latent2) {$\hat{z}$};
 
 		\draw [->] (input) -- (encoder1);
 		\draw [->] (encoder1) -- (latent1);
