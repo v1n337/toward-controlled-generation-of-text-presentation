@@ -155,7 +155,6 @@
 		\draw [-] (output) -- (inter1);
 		\draw [->] (inter1) -| (encoder);
 		\draw [->] (output) -- (discriminator);
-		\draw [->] (discriminator) -- (code);
 
 		% Independency constraint
 		\draw [magenta, dashed, ->] ($(inter1) + (-0.15,-0.15)$) -- ($(output) + (-0.15,0.45)$) node[label={[label distance=0.01cm]110:\tiny{$\mathcal{L}_{attr}$}}] {};
@@ -186,7 +185,6 @@
 		\draw [->] (code) -- (generator);
 		\draw [->] (generator) -- (output);
 		\draw [->] (output) -- (discriminator);
-		\draw [->] (discriminator) -- (code);
 		\draw [->] (output) -- (encoder2);
 		\draw [->] (encoder2) -- (latent2);
 
