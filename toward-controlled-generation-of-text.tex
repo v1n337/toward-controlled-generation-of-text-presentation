@@ -119,14 +119,14 @@
 \begin{frame}{Notation}
 	\large
 	\begin{tabular}{ l c l }
-		$x$       & $\Rightarrow$ & \textbf{source documents}                                                 \\
-		$\hat{x}$ & $\Rightarrow$ & \textbf{output documents}                                                 \\
-		$c$       & $\Rightarrow$ & \textbf{structured latent code}                \\
+		$x$       & $\Rightarrow$ & \textbf{source documents}                                              \\
+		$\hat{x}$ & $\Rightarrow$ & \textbf{output documents}                                              \\
+		$c$       & $\Rightarrow$ & \textbf{structured latent code}                                        \\
 		$z$       & $\Rightarrow$ & \textbf{unstructured latent code}                                      \\
 		\\
 		$E$       & $\Rightarrow$ & \textbf{encoder}, parameterized to generate $z$                        \\
 		$G$       & $\Rightarrow$ & \textbf{decoder/generator}, produces $\hat{x}$ conditioned on $(z, c)$ \\
-		$D$       & $\Rightarrow$ & \textbf{discriminator}, predicts $c$ given $x$ or $\hat{x}$.                  \\
+		$D$       & $\Rightarrow$ & \textbf{discriminator}, predicts $c$ given $x$ or $\hat{x}$.           \\
 		$\tau$    & $\Rightarrow$ & \textbf{softmax temperature}, for decoder word prediction              \\
 	\end{tabular}
 \end{frame}
