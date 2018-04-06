@@ -126,6 +126,7 @@
 		$\hat{x}$ & $\Rightarrow$ & \textbf{output corpus}                                                 \\
 		$c$       & $\Rightarrow$ & \textbf{structured code}, known label for each document                \\
 		$z$       & $\Rightarrow$ & \textbf{unstructured latent code}                                      \\
+		\\
 		$E$       & $\Rightarrow$ & \textbf{encoder}, parameterized to generate $z$                        \\
 		$G$       & $\Rightarrow$ & \textbf{decoder/generator}, produces $\hat{x}$ conditioned on $(z, c)$ \\
 		$D$       & $\Rightarrow$ & \textbf{discriminator}, predicts $c$ given $\hat{x}$.                  \\
@@ -286,7 +287,7 @@
 \begin{frame}{Experiments}
 	\textbf{Simple Reconstruction}
 	\begin{itemize}
-		\item 350K IMDB movie reviews
+		\item $350K$ IMDB movie reviews
 		\item Sentence length $\leq 15$;
 		\item Total sentence count $= 1.4M$
 		\item Vocab size $= 16K$
@@ -300,17 +301,17 @@
 	\begin{itemize}
 		\item \textbf{Stanford Sentiment Treebank-2}: Movie reviews
 		      \begin{itemize}
-			      \item 2837 training examples
+			      \item $2837$ training examples
 			      \item Sentence length $\leq 15$
 		      \end{itemize}
 		\item \textbf{Sentiment Lexicon}: Words used as sentences
 		      \begin{itemize}
-			      \item 2700 words
+			      \item $2700$ words
 			      \item Sentence length $\leq 15$
 		      \end{itemize}
 		\item \textbf{IMDB}: Movie reviews
 		      \begin{itemize}
-			      \item $5K/1K/10K$ sentences in train/dev/test
+			      \item $16K$ training examples
 		      \end{itemize}
 	\end{itemize}
 \end{frame}
@@ -343,7 +344,7 @@
 
 \begin{frame}{Results}
 	\centering
-	\textbf{Without `Independency Constraint'} \\
+	{\large \textbf{Without `Independency Constraint'}} \\
 	\vspace{1cm}
 	\small
 	\begin{tabular}{ p{.4\linewidth} p{.05\linewidth} p{.4\linewidth} }
@@ -373,9 +374,8 @@
 		\begin{column}{.48\textwidth}
 			\color{tropicalrainforest}\rule{\linewidth}{4pt}
 			\begin{itemize}
-				\item Non-parallel style transfer
+				\item Non-parallel attribute-controlled generation
 				\item Encoder independency constraint
-				\item Decoded style entanglement constraint
 			\end{itemize}
 		\end{column}
 		\hfill
