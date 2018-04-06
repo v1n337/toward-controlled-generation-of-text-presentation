@@ -19,8 +19,6 @@
 \begin{document}
 \maketitle
 
-\section{Motivation}
-
 \begin{frame}{Motivation}
 	\centering
 	\includegraphics[width=.9\textwidth]{images/autoencoder.png}
@@ -118,7 +116,6 @@
 \end{frame}
 
 
-\section{Method}
 \begin{frame}{Notation}
 	\large
 	\begin{tabular}{ l c l }
@@ -281,8 +278,8 @@
 	\includegraphics[width=\textwidth]{images/wake-sleep.png}
 \end{frame}
 
-\section{Experiments}
-\begin{frame}{Experiments}
+\section{Experimental Setup}
+\begin{frame}{Experimental Setup}
 	\textbf{Simple Reconstruction}
 	\begin{itemize}
 		\item $350K$ IMDB movie reviews
@@ -292,7 +289,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Experiments}
+\begin{frame}{Experimental Setup}
 
 	\textbf{Binary Sentiment Classification and Conditioned Generation}
 
@@ -314,7 +311,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Experiments}
+\begin{frame}{Experimental Setup}
 	\textbf{Tense Classification and Conditioned Generation}
 	\begin{itemize}
 		\item TimeBank\footnote{http://timeml.org} Lexicon
@@ -323,7 +320,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Experiments}
+\begin{frame}{Experimental Setup}
 	\textbf{Parameters}
 	\begin{itemize}
 		\item The generator and encoder are set as single-layer LSTM RNNs with input/hidden dimension of 300 and max decoding time-step count of 15
@@ -384,7 +381,6 @@
 \end{frame}
 
 
-\section{Commentary}
 \begin{frame}{Commentary}
 	\begin{columns}[T] % align columns
 		\begin{column}{.48\textwidth}
